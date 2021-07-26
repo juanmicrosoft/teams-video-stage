@@ -32,7 +32,15 @@
             "scopes": [
                 "team",
                 "groupchat"
-            ]
+            ],
+            "context":[
+                "channelTab",
+                "privateChatTab",
+                "meetingChatTab",
+                "meetingDetailsTab",
+                "meetingSidePanel",
+                "meetingStage"
+             ]            
         }
     ],
     "staticTabs": [
