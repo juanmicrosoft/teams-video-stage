@@ -1,8 +1,9 @@
 import React from "react";
-import { Welcome } from "./sample/Welcome";
+import { VideoList } from "./sample/VideoList";
 
 export default function Tab() {
+  
   return <div>
-    <Welcome showFunction={ true } />
+    <VideoList/>
   </div>;
 }
