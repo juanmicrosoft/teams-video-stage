@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import * as microsoftTeams from "@microsoft/teams-js";
+import { VideoList } from "./sample/VideoList";
 
 /**
  * The 'Config' component is used to display your group tabs
@@ -38,13 +39,7 @@ class TabConfig extends React.Component {
     microsoftTeams.settings.setValidityState(true);
 
     return (
-      <div>
-        <h1>Tab Configuration</h1>
-        <div>
-          This is where you will add your tab configuration options the user can choose when the tab
-          is added to your team/group chat.
-        </div>
-      </div>
+      <VideoList/>
     );
   }
 }
