@@ -1,7 +1,20 @@
 import { List, Layout, Image, Flex, Text, Divider } from "@fluentui/react-northstar";
 import { AddVideo } from "./AddVideo";
+import * as microsoftTeams from '@microsoft/teams-js';
 
 export function VideoList() {
+
+    let meetingId = null;
+
+    microsoftTeams.meeting.getMeetingDetails(
+        (error: microsoftTeams.SdkError | null, getMeetingDetails : microsoftTeams.meeting.IMeetingDetails | null) => {
+        if (error) {
+          return;
+        }
+
+
+        meetingId = getMeetingDetails?.conversation.id;
+    });
 
     const ellipsis = <span>&hellip;</span>
 
@@ -16,6 +29,9 @@ export function VideoList() {
             <Image styles={{maxWidth:'70px', padding:'5px'}} src="http://i3.ytimg.com/vi/jugBQqE_2sM/hqdefault.jpg"/>
         )}
     ];
+
+
+    console.log(meetingId);
 
     return (
         <Layout styles={{padding:'20px'}}>
