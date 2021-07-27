@@ -5,15 +5,11 @@ import * as microsoftTeams from '@microsoft/teams-js';
 export function VideoList() {
 
     let meetingId = null;
+    let tenantId = null;
 
-    microsoftTeams.meeting.getMeetingDetails(
-        (error: microsoftTeams.SdkError | null, getMeetingDetails : microsoftTeams.meeting.IMeetingDetails | null) => {
-        if (error) {
-          return;
-        }
-
-
-        meetingId = getMeetingDetails?.conversation.id;
+    microsoftTeams.getContext( (context: microsoftTeams.Context) => {
+        meetingId = context.meetingId;
+        tenantId = context.tid;
     });
 
     const ellipsis = <span>&hellip;</span>
