@@ -15,12 +15,12 @@
         "outline": "outline.png"
     },
     "name": {
-        "short": "VideoStage",
+        "short": "Video Stage",
         "full": "This field is not used"
     },
     "description": {
-        "short": "Short description of VideoStage.",
-        "full": "Full description of VideoStage."
+        "short": "Share videos in your meeting.",
+        "full": "Put videos in the meeting stage and allow all attendees to see the video locally."
     },
     "accentColor": "#FFFFFF",
     "bots": [],
