@@ -1,31 +1,54 @@
-import { List, Layout, Image, Flex, Text, Divider } from "@fluentui/react-northstar";
+import React, { useState } from 'react';
+import { List, Layout, Image, Flex, Text, Divider, Loader, Alert } from "@fluentui/react-northstar";
 import { AddVideo } from "./AddVideo";
 import * as microsoftTeams from '@microsoft/teams-js';
+import { useQuery, gql } from "@apollo/client";
+
+const LIST_OF_VIDEOS = gql`
+    query GetVideosForMeeting($meetingId: String) {
+        getVideosForMeeting(meetingId: $meetingId) {,,
+            videos {
+            id
+            url
+            description
+            image
+            }
+        }
+    }
+`;
 
 export function VideoList() {
 
-    let meetingId = null;
-    let tenantId = null;
+    const [meetingId, setMeetingId] = useState("");
 
-    microsoftTeams.getContext( (context: microsoftTeams.Context) => {
-        meetingId = context.meetingId;
-        tenantId = context.tid;
-    });
+    if (meetingId === "") {
+        microsoftTeams.getContext( (context: microsoftTeams.Context) => {
+            if (context.meetingId != null) {
+                setMeetingId(context.meetingId);
+            }
+        });
+    }
+
+    const { loading, error, data } = useQuery(LIST_OF_VIDEOS, {variables: { meetingId: meetingId } });
+
+    if (meetingId === "" || loading) { 
+        return(<Loader label="Loading..."></Loader>); 
+    }
+
+    if (error) {
+        return(<Alert danger content="Error loading list..."/>);
+    }
 
     const ellipsis = <span>&hellip;</span>
 
-    const items = [
-        { key: '1', content: 'https://www.youtube.com/watch?v=usqvLtEq2qQ', header: 'My Awkward Audition for The Office',  endMedia: ellipsis, media: (
-            <Image styles={{maxWidth:'70px', padding:'5px'}} src="http://i3.ytimg.com/vi/usqvLtEq2qQ/hqdefault.jpg"/>
-        )},
-        { key: '2', content: 'https://www.youtube.com/watch?v=VDDPoYOQYfM', header: 'Microsoft Teams Tutorial in 10 min',  endMedia: ellipsis, media: (
-            <Image styles={{maxWidth:'70px', padding:'5px'}} src="http://i3.ytimg.com/vi/VDDPoYOQYfM/hqdefault.jpg"/>
-        )},
-        { key: '3', content: 'https://www.youtube.com/watch?v=jugBQqE_2sM', header: 'Welcome to Microsoft Teams',  endMedia: ellipsis, media: (
-            <Image styles={{maxWidth:'70px', padding:'5px'}} src="http://i3.ytimg.com/vi/jugBQqE_2sM/hqdefault.jpg"/>
-        )}
-    ];
+    const items = data["getVideosForMeeting"]["videos"].map( function(video: any) {
 
+        let item = { key: video["id"], content: video["url"], header: video["description"], endMedia: ellipsis, media: (
+            <Image styles={{maxWidth:'70px', padding:'5px'}} src={video["image"]}/>
+        )};
+
+        return item;
+    });
 
     console.log(meetingId);
 
